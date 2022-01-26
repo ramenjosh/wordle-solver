@@ -8,13 +8,18 @@ from wordle_solver.information import (
     LetterNotPresent,
     LetterPresentCorrectPosition,
     LetterPresentIncorrectPosition,
+    parse_information_string,
 )
 
 from typing import Optional, List
 
 
 @dataclass
-class WordleServer:
+class KnownWordleServer:
+    """
+    Represents a Wordle Server with a known word.
+    Can be used for local testing.
+    """
 
     word: str
 
@@ -46,3 +51,39 @@ class WordleServer:
                 result.append(LetterNotPresent(letter=char))
 
         return result
+
+
+@dataclass
+class RemoteWordleServer:
+    """
+    Represents a remote wordle server where the word is unknown.
+    Requires input from the user as to what the server responded with.
+
+    This input is then converted into a List of Information.
+    """
+
+    def handler(self, guess: str) -> Optional[List[Information]]:
+        """ """
+
+        print(
+            f"""Please input the following guess into your Wordle game:
+
+*********
+* {guess} *
+*********
+"""
+        )
+
+        while True:
+            server_resp = input(
+                """Please input the response from the server below.
+Use '_' for incorrect letter, '?' for incorrect position and 'Y' for correct position:
+
+"""
+            )
+            try:
+                information = parse_information_string(guess=guess, instr=server_resp)
+                return information
+            except TypeError as err:
+                print(err)
+                print("Please try and input the server response again.")

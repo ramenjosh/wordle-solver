@@ -68,3 +68,21 @@ def information_list_to_str(inlist: Optional[List[Information]]) -> Optional[str
         return None
     else:
         return "".join(map(str, inlist))
+
+
+def parse_information_string(guess: str, instr: str) -> List[Information]:
+    """
+    Returns a List of Information based on a provided string.
+    """
+    information: List[Information] = []
+    for ind, (c, r) in enumerate(zip(guess, instr)):
+        if r == "_":
+            information.append(LetterNotPresent(letter=c))
+        elif r == "?":
+            information.append(LetterPresentIncorrectPosition(letter=c, position=ind))
+        elif r == "Y":
+            information.append(LetterPresentCorrectPosition(letter=c, position=ind))
+        else:
+            raise TypeError(f"Unable to parse character {c} in input.")
+
+    return information

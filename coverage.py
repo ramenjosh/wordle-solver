@@ -1,11 +1,11 @@
 from wordle_solver.wordle_client import IndexedWordleClient
 
 # from wordle_solver.wordle_client import BasicWordleClient
-from wordle_solver.wordle_server import WordleServer
+from wordle_solver.wordle_server import KnownWordleServer
 from wordle_solver.words import WORDS
 
 
-def did_guess_within_n_turns(client, server: WordleServer, n: int) -> bool:
+def did_guess_within_n_turns(client, server: KnownWordleServer, n: int) -> bool:
     for turn in range(n):
         guess = client.pick_guess()
         if len(client.word_list) == 1:
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     n = 6
     for word in WORDS:
         client = IndexedWordleClient(word_list=WORDS, information=[])
-        server = WordleServer(word)
+        server = KnownWordleServer(word)
         if did_guess_within_n_turns(client, server, n):
             correct += 1
 
