@@ -1,14 +1,5 @@
 from wordle_solver.wordle_server import WordleServer
-from wordle_solver.information import Information
-
-from typing import Optional, List
-
-
-def information_list_to_str(inlist: Optional[List[Information]]) -> Optional[str]:
-    if inlist is None:
-        return None
-    else:
-        return "".join(map(str, inlist))
+from wordle_solver.information import information_list_to_str
 
 
 def test_server_two_letters():

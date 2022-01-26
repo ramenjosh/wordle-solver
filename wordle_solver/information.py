@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, Optional, List
 
 
 @dataclass
@@ -61,3 +61,10 @@ class LetterPresentCorrectPosition:
 Information = Union[
     LetterNotPresent, LetterPresentIncorrectPosition, LetterPresentCorrectPosition
 ]
+
+
+def information_list_to_str(inlist: Optional[List[Information]]) -> Optional[str]:
+    if inlist is None:
+        return None
+    else:
+        return "".join(map(str, inlist))
