@@ -13,6 +13,12 @@ class LetterNotPresent:
         if len(self.letter) != 1:
             raise TypeError("Letter must be a single character.")
 
+    def filter(self, s: str) -> bool:
+        """
+        Filters out words that have this letter within them.
+        """
+        return not (self.letter in s)
+
 
 @dataclass
 class LetterPresentIncorrectPosition:
@@ -26,6 +32,12 @@ class LetterPresentIncorrectPosition:
         if len(self.letter) != 1:
             raise TypeError("Letter must be a single character.")
 
+    def filter(self, s: str) -> bool:
+        """
+        Filters out words that have this letter at the position indicated.
+        """
+        return (self.letter in s) and not (s[self.position] == self.letter)
+
 
 @dataclass
 class LetterPresentCorrectPosition:
@@ -38,6 +50,12 @@ class LetterPresentCorrectPosition:
     def __post_init__(self):
         if len(self.letter) != 1:
             raise TypeError("Letter must be a single character.")
+
+    def filter(self, s: str) -> bool:
+        """
+        Filters out words that have this letter at the position indicated.
+        """
+        return s[self.position] == self.letter
 
 
 Information = Union[
