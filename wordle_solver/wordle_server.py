@@ -3,8 +3,14 @@
 # Defines a server for playing the game wordle.
 # Initialised with a single word, which is considered as being hidden to the client.
 from dataclasses import dataclass
+from wordle_solver.information import (
+    Information,
+    LetterNotPresent,
+    LetterPresentCorrectPosition,
+    LetterPresentIncorrectPosition,
+)
 
-from typing import Optional
+from typing import Optional, List
 
 
 @dataclass
@@ -12,7 +18,7 @@ class WordleServer:
 
     word: str
 
-    def handler(self, guess: str) -> Optional[str]:
+    def handler(self, guess: str) -> Optional[List[Information]]:
         """
         Given a client's guess, returns a string where each character contains the
         following information:
@@ -28,13 +34,15 @@ class WordleServer:
         if len(guess) != len(self.word):
             return None
 
-        result = ""
+        result: List[Information] = []
         for index, char in enumerate(guess):
             if self.word[index] == char:
-                result += "Y"
+                result.append(LetterPresentCorrectPosition(letter=char, position=index))
             elif char in self.word:
-                result += "?"
+                result.append(
+                    LetterPresentIncorrectPosition(letter=char, position=index)
+                )
             else:
-                result += "_"
+                result.append(LetterNotPresent(letter=char))
 
         return result
